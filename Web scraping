@@ -1,1 +1,91 @@
+ Inspect Your Data Source
+The first step is to head over to the site you want to scrape 
+using your favorite browser. You’ll need to understand the site 
+structure to extract the information you’re interested in.
+
+Decipher the Information in URLs
+A lot of information can be encoded in a URL. Your web scraping
+ journey will be much easier if you first become familiar with how 
+URLs work and what they’re made of. 
+
+Inspect the Site Using Developer Tools
+Developer tools can help you understand the structure of a website.
+ All modern browsers come with developer tools installed. In this 
+tutorial, you’ll see how to work with the developer tools in Chrome.
+ The process will be very similar to other modern browsers.
+
+Scrape HTML Content From a Page
+Now that you have an idea of what you’re working with, it’s time to 
+get started using Python. First, you’ll want to get the site’s HTML 
+code into your Python script so that you can interact with it. For 
+this task, you’ll use Python’s requests library. Type the following 
+in your terminal to install it:
+
+$ pip3 install requests
+
+Then open up a new file in your favorite text editor. All you need 
+to retrieve the HTML are a few lines of code:
+
+import requests
+
+URL = 'https://www.monster.com/jobs/search/?q=Software-Developer&where=Australia'
+page = requests.get(URL)
+
+
+Parse HTML Code With Beautiful Soup
+You’ve successfully scraped some HTML from the Internet, but when
+ you look at it now, it just seems like a huge mess. There are tons
+ of HTML elements here and there, thousands of attributes scattered 
+around—and wasn’t there some JavaScript mixed in as well? It’s time 
+to parse this lengthy code response with Beautiful Soup to make it
+ more accessible and pick out the data that you’re interested in.
+
+Beautiful Soup is a Python library for parsing structured data.
+ It allows you to interact with HTML in a similar way to how you
+ would interact with a web page using developer tools. Beautiful 
+Soup exposes a couple of intuitive functions you can use to explore
+ the HTML you received. To get started, use your terminal to install
+ the Beautiful Soup library:
+
+$ pip3 install beautifulsoup4
+
+Then, import the library and create a Beautiful Soup object:
+
+import requests
+from bs4 import BeautifulSoup
+
+URL = 'https://www.monster.com/jobs/search/?q=Software-Developer&where=Australia'
+page = requests.get(URL)
+
+soup = BeautifulSoup(page.content, 'html.parser')
+
+Find Elements by ID
+In an HTML web page, every element can have an id attribute assigned. As the name 
+already suggests, that id attribute makes the element uniquely identifiable on the page. 
+You can begin to parse your page by selecting a specific element by its ID.
+
+Switch back to developer tools and identify the HTML object that contains all of the job postings.
+ Explore by hovering over parts of the page and using right-click to Inspect.
+At the time of this writing, the element you’re looking for is a <div> with an id attribute that
+ has the value "ResultsContainer". It has a couple of other attributes as well, but below is the 
+gist of what you’re looking for:
+
+<div id="ResultsContainer">
+    <!-- all the job listings -->
+</div>
+
+Beautiful Soup allows you to find that specific element easily by its ID:
+
+results = soup.find(id='ResultsContainer')
+
+For easier viewing, you can .prettify() any Beautiful Soup object when you print it out.
+ If you call this method on the results variable that you just assigned above, then you 
+should see all the HTML contained within the <div>:
+
+print(results.prettify())
+
+
+When you use the element’s ID, you’re able to pick one element out from among the
+rest of the HTML. This allows you to work with only this specific part of the page’s HTML.
+
 
